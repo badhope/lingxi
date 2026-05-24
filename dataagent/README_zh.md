@@ -4,7 +4,7 @@
 
 ## 简介
 
-Data-Agent 是一个强大的 AI Agent 平台，不仅支持多种 Agent 类型、丰富的工具集，还集成了完整的文档处理、内容生成和自动化办公功能。
+Data-Agent 是一个功能完整的智能数据助手平台，基于 OpenManus 构建，集成了先进的文档处理能力、语音交互功能和企业级知识库系统。
 
 ## 核心功能
 
@@ -35,13 +35,6 @@ Data-Agent 是一个强大的 AI Agent 平台，不仅支持多种 Agent 类型�
 - Python 3.10+
 - pip 或 uv
 
-### 安装（推荐）
-
-```bash
-# 一键安装（自动安装依赖、创建配置文件）
-./setup.sh
-```
-
 ### 手动安装
 
 ```bash
@@ -55,50 +48,26 @@ cp config/config.example.toml config/config.toml
 # 支持 OpenAI, Anthropic, Google, Ollama 等
 ```
 
-### 验证安装
-
-```bash
-# 检查配置是否正确
-python check_config.py
-```
-
 ### 运行
 
 ```bash
-# Web 模式（推荐）
-python web_app.py
-# 访问 http://localhost:8000
-
-# CLI 模式
+# Web 模式（唯一入口）
 python main.py
-
-# Flow 模式
-python run_flow.py
-
-# MCP 模式
-python run_mcp.py
+# 访问 http://localhost:8000
 ```
 
 ## 项目结构
 
 ```
 dataagent/
-├── main.py          # CLI 入口
-├── web_app.py       # Web API 入口（FastAPI）
-├── run_flow.py      # Flow 运行器
-├── run_mcp.py       # MCP Agent
-├── setup.sh         # 一键安装脚本
-├── check_config.py  # 配置检查工具
-├── app/
-│   ├── agent/       # Agent 实现
-│   ├── tool/        # 工具集
-│   ├── flow/        # Flow 编排
-│   ├── mcp/         # MCP 协议
-│   ├── document/    # 文档处理模块
-│   ├── services/    # 服务层
-│   └── prompt/      # Prompt 模板
+├── main.py          # 统一 Web 应用入口
+├── core/            # 核心模块
 ├── routers/         # API 路由
-└── config/          # 配置文件
+├── services/        # 业务逻辑
+├── static/          # 静态资源
+├── templates/       # HTML 模板
+├── config/          # 配置文件
+└── requirements.txt # 依赖文件
 ```
 
 ## 文档处理模块
@@ -124,4 +93,4 @@ playwright install chromium
 
 ## 许可证
 
-MIT License
+Apache 2.0 License

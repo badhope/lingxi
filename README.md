@@ -12,7 +12,7 @@ Data-Agent 是一个功能完整的智能数据助手平台，基于 OpenManus �
 
 ```bash
 cd dataagent
-python web_app.py
+python main.py
 ```
 
 然后在浏览器中访问 `http://localhost:8000`
@@ -293,38 +293,45 @@ allowed_origins = ["*"]
 ```
 Data-Agent/
 ├── dataagent/
-│   ├── main.py              # CLI入口
-│   ├── web_app.py           # Web应用入口
-│   ├── app/
-│   │   ├── agent/           # Agent实现
-│   │   ├── tool/            # 工具集
-│   │   ├── document/        # 文档处理模块
-│   │   │   ├── meeting_minutes.py
-│   │   │   ├── summarizer.py
-│   │   │   ├── translator.py
-│   │   │   └── ppt_generator.py
-│   │   ├── knowledge/       # 知识库模块 ⭐
-│   │   │   ├── __init__.py
-│   │   │   ├── vector_store.py
-│   │   │   ├── document_loader.py
-│   │   │   ├── knowledge_base.py
-│   │   │   └── qa_engine.py
-│   │   ├── sandbox/         # 沙箱环境
-│   │   └── mcp/             # MCP协议
-│   ├── routers/
-│   │   ├── settings.py      # 设置路由
-│   │   ├── knowledge.py     # 知识库API ⭐
-│   │   ├── skills.py        # 技能路由
-│   │   ├── mcp.py           # MCP路由
+│   ├── main.py              # 统一Web应用入口 ✅
+│   ├── core/                # 核心模块
+│   │   ├── __init__.py
+│   │   ├── config.py
+│   │   ├── config_manager.py
+│   │   ├── database.py
+│   │   ├── websocket.py
+│   │   └── plugins_builtin.py
+│   ├── routers/             # API 路由
+│   │   ├── auth.py
+│   │   ├── settings.py
+│   │   ├── knowledge.py
+│   │   ├── skills.py
+│   │   ├── mcp.py
 │   │   └── ...
 │   ├── services/            # 服务层
-│   ├── static/
+│   │   ├── agent_service.py
+│   │   └── polish_service.py
+│   ├── static/              # 前端资源
 │   │   ├── js/
 │   │   │   ├── app.js
-│   │   │   └── voice_input.js  # 语音输入 ⭐
+│   │   │   ├── conversations.js
+│   │   │   └── knowledge.js
 │   │   └── css/
-│   └── templates/           # HTML模板
-└── README.md                # 使用文档
+│   │       ├── app.css
+│   │       ├── chat.css
+│   │       └── modern.css
+│   ├── templates/           # HTML 模板
+│   │   ├── index.html
+│   │   ├── logs.html
+│   │   └── plugins.html
+│   ├── config/              # 配置文件
+│   │   └── config.toml
+│   ├── web_archive/         # 旧web实现（已归档）
+│   └── requirements.txt     # 依赖文件
+├── docs/                    # 项目文档
+├── UNIFIED_ARCHITECTURE.md  # 统一架构说明
+├── .gitignore               # Git 忽略文件
+└── README.md                # 本文件
 ```
 
 ---
@@ -408,8 +415,13 @@ python -m pytest tests/
 # 安装依赖
 pip install -r requirements.txt
 
+# 复制配置模板
+cp config/config.example.toml config/config.toml
+
+# 编辑配置文件，填入 API Key
+
 # 启动开发服务器
-python web_app.py
+python main.py
 ```
 
 ### 生产环境
@@ -417,7 +429,14 @@ python web_app.py
 ```bash
 # 使用 Gunicorn
 pip install gunicorn
-gunicorn -w 4 web_app:app
+gunicorn -w 4 main:app
+```
+
+### Docker部署
+
+```bash
+# 构建和运行
+docker-compose up -d --build
 ```
 
 ---
