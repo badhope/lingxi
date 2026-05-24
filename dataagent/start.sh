@@ -124,4 +124,4 @@ echo -e "${YELLOW}[5/5] 启动 DataAgent 服务...${NC}"
 echo ""
 
 cd "$SCRIPT_DIR"
-$PYTHON_CMD web_app.py
+$PYTHON_CMD main.py
