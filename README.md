@@ -11,7 +11,7 @@ Data-Agent 是一个功能完整的智能数据助手平台，基于 OpenManus �
 ### 1. 启动应用
 
 ```bash
-cd OpenManus
+cd dataagent
 python web_app.py
 ```
 
@@ -292,7 +292,7 @@ allowed_origins = ["*"]
 
 ```
 Data-Agent/
-├── OpenManus/
+├── dataagent/
 │   ├── main.py              # CLI入口
 │   ├── web_app.py           # Web应用入口
 │   ├── app/
@@ -386,7 +386,7 @@ http://localhost:8000/api/
 ### 运行测试
 
 ```bash
-cd OpenManus
+cd dataagent
 python -m pytest tests/
 ```
 

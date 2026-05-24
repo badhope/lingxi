@@ -1,0 +1,129 @@
+# DataAgent Docker Compose Configuration
+# 支持开发、生产、测试等多种环境
+
+version: '3.8'
+
+services:
+  # DataAgent - 主应用
+  dataagent:
+    build:
+      context: .
+      target: dev
+    container_name: dataagent
+    restart: unless-stopped
+    ports:
+      - "8000:8000"
+    environment:
+      - DEBUG=True
+      - SERVER_HOST=0.0.0.0
+      - SERVER_PORT=8000
+      # 数据库配置
+      - DATABASE_TYPE=sqlite
+      - DATABASE_PATH=/app/data/dataagent.db
+      # Webhook 配置
+      - WEBHOOK_ENABLED=True
+      # 缓存配置
+      - CACHE_ENABLED=True
+      - CACHE_TTL=3600
+    volumes:
+      # 数据持久化
+      - dataagent_data:/app/data
+      - dataagent_logs:/app/logs
+      - dataagent_config:/app/config
+      - dataagent_workspace:/app/workspace
+      # 用户配置目录
+      - ~/.dataagent:/root/.dataagent
+    networks:
+      - dataagent
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/api/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 5s
+
+  # 生产环境版本
+  dataagent-prod:
+    build:
+      context: .
+      target: prod
+    container_name: dataagent-prod
+    restart: unless-stopped
+    ports:
+      - "8001:8000"
+    environment:
+      - DEBUG=False
+      - SERVER_HOST=0.0.0.0
+      - SERVER_PORT=8000
+      - LOG_LEVEL=INFO
+    volumes:
+      - dataagent_data_prod:/app/data
+      - dataagent_logs_prod:/app/logs
+      - dataagent_config_prod:/app/config
+      - dataagent_workspace_prod:/app/workspace
+    networks:
+      - dataagent
+    profiles:
+      - prod
+
+  # PostgreSQL 数据库 (可选)
+  db:
+    image: postgres:15-alpine
+    container_name: dataagent-db
+    restart: unless-stopped
+    environment:
+      - POSTGRES_USER=dataagent
+      - POSTGRES_PASSWORD=dataagent
+      - POSTGRES_DB=dataagent
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - dataagent
+    profiles:
+      - db
+
+  # Redis (可选，用于缓存)
+  redis:
+    image: redis:7-alpine
+    container_name: dataagent-redis
+    restart: unless-stopped
+    volumes:
+      - redis_data:/data
+    networks:
+      - dataagent
+    profiles:
+      - redis
+
+  # Nginx 反向代理 (可选)
+  nginx:
+    image: nginx:alpine
+    container_name: dataagent-nginx
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./dataagent/static:/app/static:ro
+    networks:
+      - dataagent
+    profiles:
+      - nginx
+    depends_on:
+      - dataagent
+
+networks:
+  dataagent:
+    driver: bridge
+
+volumes:
+  dataagent_data:
+  dataagent_logs:
+  dataagent_config:
+  dataagent_workspace:
+  dataagent_data_prod:
+  dataagent_logs_prod:
+  dataagent_config_prod:
+  dataagent_workspace_prod:
+  postgres_data:
+  redis_data:

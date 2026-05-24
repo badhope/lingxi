@@ -1,0 +1,946 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>插件管理 - DataAgent</title>
+    <link rel="stylesheet" href="/static/css/variables.css">
+    <link rel="stylesheet" href="/static/css/modern.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; 
+            background: var(--bg-primary); 
+            color: var(--text-primary); 
+            min-height: 100vh;
+        }
+        
+        .container { max-width: 1400px; margin: 0 auto; padding: 40px 20px; }
+        
+        .page-header {
+            margin-bottom: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+        }
+        
+        .page-title {
+            font-size: 32px;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .page-subtitle { color: var(--text-muted); font-size: 14px; margin-top: 6px; }
+        
+        .header-actions { display: flex; gap: 12px; }
+        
+        .action-btn { 
+            padding: 12px 20px; 
+            background: var(--bg-tertiary); 
+            border-radius: 12px; 
+            font-size: 14px; 
+            display: flex; 
+            align-items: center; 
+            gap: 8px; 
+            cursor: pointer; 
+            border: none; 
+            color: var(--text-primary); 
+            transition: all 0.2s ease;
+        }
+        .action-btn:hover { 
+            background: var(--bg-hover); 
+            transform: translateY(-1px);
+        }
+        .action-btn.primary {
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            color: white;
+        }
+        .action-btn.primary:hover {
+            box-shadow: 0 4px 15px rgba(59, 130, 246, 0.4);
+        }
+        
+        /* Filter Tabs */
+        .filter-tabs {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 24px;
+            padding: 4px;
+            background: var(--bg-secondary);
+            border-radius: 12px;
+            border: 1px solid var(--border);
+        }
+        
+        .filter-tab {
+            padding: 10px 20px;
+            background: transparent;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            color: var(--text-secondary);
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.2s ease;
+        }
+        .filter-tab:hover { color: var(--text-primary); }
+        .filter-tab.active {
+            background: var(--bg-tertiary);
+            color: var(--primary);
+        }
+        
+        /* Plugin Grid */
+        .plugins-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(420px, 1fr));
+            gap: 20px;
+        }
+        
+        .plugin-card {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 24px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        .plugin-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
+            border-color: var(--primary);
+        }
+        
+        .plugin-header {
+            display: flex;
+            align-items: flex-start;
+            gap: 16px;
+            margin-bottom: 20px;
+        }
+        
+        .plugin-icon {
+            width: 56px;
+            height: 56px;
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            flex-shrink: 0;
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.1), rgba(139, 92, 246, 0.1));
+        }
+        
+        .plugin-info { flex: 1; }
+        
+        .plugin-name {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 4px;
+            color: var(--text-primary);
+        }
+        
+        .plugin-type {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 4px 10px;
+            background: rgba(59, 130, 246, 0.1);
+            color: var(--primary);
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+        
+        .plugin-desc {
+            color: var(--text-muted);
+            font-size: 14px;
+            line-height: 1.6;
+            margin-bottom: 16px;
+        }
+        
+        .plugin-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 16px;
+        }
+        
+        .meta-tag {
+            padding: 6px 12px;
+            background: var(--bg-tertiary);
+            border-radius: 8px;
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+        
+        .plugin-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin-bottom: 16px;
+        }
+        
+        .tag {
+            padding: 4px 10px;
+            background: rgba(59, 130, 246, 0.1);
+            border-radius: 6px;
+            font-size: 12px;
+            color: var(--primary);
+        }
+        
+        .plugin-actions {
+            display: flex;
+            gap: 8px;
+            padding-top: 16px;
+            border-top: 1px solid var(--border);
+        }
+        
+        .plugin-btn {
+            flex: 1;
+            padding: 10px 16px;
+            border: none;
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        
+        .plugin-btn.use {
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            color: white;
+        }
+        .plugin-btn.use:hover {
+            box-shadow: 0 4px 15px rgba(59, 130, 246, 0.4);
+            transform: translateY(-1px);
+        }
+        
+        .plugin-btn.toggle {
+            background: var(--bg-tertiary);
+            color: var(--text-primary);
+        }
+        .plugin-btn.toggle:hover {
+            background: var(--bg-hover);
+        }
+        .plugin-btn.toggle.active {
+            background: rgba(16, 185, 129, 0.15);
+            color: #10b981;
+        }
+        
+        /* Status Badge */
+        .status-badge {
+            position: absolute;
+            top: 16px;
+            right: 16px;
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 11px;
+            font-weight: 600;
+        }
+        .status-badge.enabled {
+            background: rgba(16, 185, 129, 0.15);
+            color: #10b981;
+        }
+        .status-badge.disabled {
+            background: rgba(107, 114, 128, 0.15);
+            color: #6b7280;
+        }
+        
+        /* Modal */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(4px);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+        }
+        .modal-overlay.show { display: flex; }
+        
+        .modal {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            width: 90%;
+            max-width: 600px;
+            max-height: 90vh;
+            overflow: hidden;
+            animation: modal-in 0.3s ease;
+        }
+        
+        @keyframes modal-in {
+            from { opacity: 0; transform: translateY(-20px) scale(0.95); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+        
+        .modal-header {
+            padding: 24px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .modal-title { font-size: 20px; font-weight: 600; }
+        .modal-close {
+            width: 36px;
+            height: 36px;
+            border-radius: 10px;
+            border: none;
+            background: var(--bg-tertiary);
+            color: var(--text-primary);
+            cursor: pointer;
+            font-size: 18px;
+            transition: all 0.2s ease;
+        }
+        .modal-close:hover { background: var(--bg-hover); }
+        
+        .modal-body { padding: 24px; overflow-y: auto; }
+        .modal-footer {
+            padding: 20px 24px;
+            border-top: 1px solid var(--border);
+            display: flex;
+            gap: 12px;
+            justify-content: flex-end;
+        }
+        
+        /* Plugin Execute Form */
+        .form-group { margin-bottom: 20px; }
+        .form-label {
+            display: block;
+            font-size: 14px;
+            font-weight: 500;
+            margin-bottom: 8px;
+            color: var(--text-primary);
+        }
+        .form-input, .form-select, .form-textarea {
+            width: 100%;
+            padding: 12px 16px;
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            color: var(--text-primary);
+            font-size: 14px;
+            transition: all 0.2s ease;
+        }
+        .form-input:focus, .form-select:focus, .form-textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+        .form-textarea { resize: vertical; min-height: 100px; }
+        
+        .result-box {
+            margin-top: 20px;
+            padding: 16px;
+            background: var(--bg-tertiary);
+            border-radius: 12px;
+            border: 1px solid var(--border);
+        }
+        .result-title {
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 12px;
+            color: var(--text-primary);
+        }
+        .result-content {
+            font-family: monospace;
+            font-size: 13px;
+            padding: 12px;
+            background: var(--bg-primary);
+            border-radius: 8px;
+            overflow-x: auto;
+            white-space: pre-wrap;
+            word-break: break-all;
+        }
+        
+        .tools-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            gap: 10px;
+        }
+        .tool-item {
+            padding: 12px;
+            background: var(--bg-tertiary);
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border: 2px solid transparent;
+        }
+        .tool-item:hover {
+            background: var(--bg-hover);
+            border-color: var(--primary);
+        }
+        .tool-item.selected {
+            border-color: var(--primary);
+            background: rgba(59, 130, 246, 0.1);
+        }
+        .tool-name {
+            font-size: 14px;
+            font-weight: 500;
+            margin-bottom: 4px;
+        }
+        .tool-desc {
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+        
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 80px 40px;
+        }
+        .empty-icon { font-size: 64px; margin-bottom: 20px; }
+        .empty-title {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+        .empty-desc { color: var(--text-muted); font-size: 14px; }
+        
+        /* Loading */
+        .loading {
+            text-align: center;
+            padding: 60px;
+        }
+        .loading-spinner {
+            width: 40px;
+            height: 40px;
+            border: 3px solid var(--border);
+            border-top-color: var(--primary);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 16px;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+        
+        /* Nav Link */
+        .nav-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 20px;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            color: var(--text-primary);
+            text-decoration: none;
+            font-size: 14px;
+            transition: all 0.2s ease;
+        }
+        .nav-link:hover {
+            background: var(--bg-tertiary);
+            border-color: var(--primary);
+            transform: translateY(-1px);
+        }
+        
+        @media (max-width: 768px) {
+            .plugins-grid { grid-template-columns: 1fr; }
+            .page-header { flex-direction: column; align-items: flex-start; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="page-header">
+            <div>
+                <a href="/" class="nav-link" style="margin-bottom: 16px; display: inline-flex;">
+                    ← 返回主页
+                </a>
+                <h1 class="page-title">🔌 插件管理</h1>
+                <p class="page-subtitle">管理和使用 DataAgent 的丰富插件库</p>
+            </div>
+            <div class="header-actions">
+                <button class="action-btn" onclick="saveState()">
+                    💾 保存状态
+                </button>
+                <button class="action-btn" onclick="loadState()">
+                    📂 加载状态
+                </button>
+                <button class="action-btn primary" onclick="refreshPlugins()">
+                    🔄 刷新
+                </button>
+            </div>
+        </div>
+        
+        <div class="filter-tabs" id="filter-tabs">
+            <button class="filter-tab active" data-filter="all">全部</button>
+            <button class="filter-tab" data-filter="tool">工具插件</button>
+            <button class="filter-tab" data-filter="analytics">分析插件</button>
+            <button class="filter-tab" data-filter="visualization">可视化插件</button>
+            <button class="filter-tab" data-filter="data_source">数据源插件</button>
+            <button class="filter-tab" data-filter="document">文档插件</button>
+            <button class="filter-tab" data-filter="agent">智能体插件</button>
+            <button class="filter-tab" data-filter="integration">集成插件</button>
+        </div>
+        
+        <div id="plugins-container" class="plugins-grid">
+            <div class="loading">
+                <div class="loading-spinner"></div>
+                <div>加载插件中...</div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Plugin Execute Modal -->
+    <div class="modal-overlay" id="modal-overlay">
+        <div class="modal">
+            <div class="modal-header">
+                <h2 class="modal-title" id="modal-title">执行插件</h2>
+                <button class="modal-close" onclick="closeModal()">✕</button>
+            </div>
+            <div class="modal-body" id="modal-body">
+            </div>
+            <div class="modal-footer">
+                <button class="action-btn" onclick="closeModal()">关闭</button>
+                <button class="action-btn primary" id="modal-execute-btn">执行</button>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        let plugins = [];
+        let currentFilter = 'all';
+        let currentPlugin = null;
+        let currentTool = null;
+        
+        const iconMap = {
+            'math_tools': '🧮',
+            'string_tools': '✏️',
+            'time_tools': '⏰',
+            'file_tools': '📁',
+            'basic_analytics': '📊',
+            'simple_visualization': '📈',
+            'sample_data_source': '📦',
+            'crypto_tools': '🔐',
+            'data_converter': '🔄',
+            'regex_tools': '🔍',
+            'color_tools': '🎨',
+            'unit_converter': '📏',
+            'advanced_analytics': '🔬'
+        };
+        
+        document.addEventListener('DOMContentLoaded', () => {
+            refreshPlugins();
+            setupFilters();
+        });
+        
+        async function refreshPlugins() {
+            try {
+                const container = document.getElementById('plugins-container');
+                container.innerHTML = '<div class="loading"><div class="loading-spinner"></div><div>加载插件中...</div></div>';
+                
+                const response = await fetch('/api/plugins');
+                const data = await response.json();
+                plugins = data.plugins || [];
+                
+                renderPlugins();
+            } catch (error) {
+                console.error('Failed to load plugins:', error);
+                const container = document.getElementById('plugins-container');
+                container.innerHTML = '<div class="empty-state"><div class="empty-icon">❌</div><div class="empty-title">加载失败</div><div class="empty-desc">请刷新页面重试</div></div>';
+            }
+        }
+        
+        function renderPlugins() {
+            const container = document.getElementById('plugins-container');
+            
+            const filteredPlugins = currentFilter === 'all' 
+                ? plugins 
+                : plugins.filter(p => p.metadata?.type === currentFilter);
+            
+            if (filteredPlugins.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-icon">📦</div>
+                        <div class="empty-title">暂无插件</div>
+                        <div class="empty-desc">该类型下暂时没有可用插件</div>
+                    </div>
+                `;
+                return;
+            }
+            
+            container.innerHTML = filteredPlugins.map(plugin => {
+                const metadata = plugin.metadata || {};
+                const config = plugin.config || {};
+                const isEnabled = config.enabled;
+                const icon = iconMap[metadata.id] || '📦';
+                const typeName = getTypeName(metadata.type);
+                
+                return `
+                    <div class="plugin-card" data-id="${metadata.id}">
+                        <div class="status-badge ${isEnabled ? 'enabled' : 'disabled'}">
+                            ${isEnabled ? '已启用' : '已禁用'}
+                        </div>
+                        <div class="plugin-header">
+                            <div class="plugin-icon">${icon}</div>
+                            <div class="plugin-info">
+                                <h3 class="plugin-name">${escapeHtml(metadata.name || metadata.id)}</h3>
+                                <span class="plugin-type">${typeName}</span>
+                            </div>
+                        </div>
+                        <p class="plugin-desc">${escapeHtml(metadata.description || '')}</p>
+                        <div class="plugin-meta">
+                            <span class="meta-tag">版本: ${escapeHtml(metadata.version || '1.0.0')}</span>
+                            <span class="meta-tag">作者: ${escapeHtml(metadata.author || 'DataAgent')}</span>
+                        </div>
+                        ${metadata.tags && metadata.tags.length > 0 ? `
+                            <div class="plugin-tags">
+                                ${metadata.tags.map(tag => `<span class="tag">${escapeHtml(tag)}</span>`).join('')}
+                            </div>
+                        ` : ''}
+                        <div class="plugin-actions">
+                            <button class="plugin-btn use" onclick="openPluginModal('${metadata.id}')" ${!isEnabled ? 'disabled' : ''}>
+                                使用插件
+                            </button>
+                            <button class="plugin-btn toggle ${isEnabled ? 'active' : ''}" onclick="togglePlugin('${metadata.id}')">
+                                ${isEnabled ? '禁用' : '启用'}
+                            </button>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+        
+        function getTypeName(type) {
+            const names = {
+                'tool': '🛠️ 工具插件',
+                'analytics': '📊 分析插件',
+                'visualization': '📈 可视化插件',
+                'data_source': '📦 数据源插件',
+                'document': '📄 文档插件',
+                'agent': '🤖 智能体插件',
+                'integration': '🔗 集成插件'
+            };
+            return names[type] || type;
+        }
+        
+        function setupFilters() {
+            const tabs = document.querySelectorAll('.filter-tab');
+            tabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    tabs.forEach(t => t.classList.remove('active'));
+                    tab.classList.add('active');
+                    currentFilter = tab.dataset.filter;
+                    renderPlugins();
+                });
+            });
+        }
+        
+        async function togglePlugin(pluginId) {
+            try {
+                const plugin = plugins.find(p => p.metadata?.id === pluginId);
+                const isEnabled = plugin?.config?.enabled;
+                const endpoint = isEnabled ? '/disable' : '/enable';
+                
+                await fetch(`/api/plugins/${pluginId}${endpoint}`, {
+                    method: 'POST'
+                });
+                
+                await refreshPlugins();
+            } catch (error) {
+                console.error('Failed to toggle plugin:', error);
+                alert('操作失败，请重试');
+            }
+        }
+        
+        async function openPluginModal(pluginId) {
+            currentPlugin = plugins.find(p => p.metadata?.id === pluginId);
+            if (!currentPlugin) return;
+            
+            const overlay = document.getElementById('modal-overlay');
+            const title = document.getElementById('modal-title');
+            const body = document.getElementById('modal-body');
+            const executeBtn = document.getElementById('modal-execute-btn');
+            
+            title.textContent = `使用: ${currentPlugin.metadata?.name || pluginId}`;
+            executeBtn.onclick = () => executeCurrentPlugin();
+            
+            const pluginType = currentPlugin.metadata?.type;
+            
+            if (pluginType === 'tool') {
+                body.innerHTML = await getToolPluginContent(pluginId);
+            } else if (pluginType === 'analytics') {
+                body.innerHTML = await getAnalyticsPluginContent(pluginId);
+            } else if (pluginType === 'visualization') {
+                body.innerHTML = await getVisualizationPluginContent(pluginId);
+            } else if (pluginType === 'data_source') {
+                body.innerHTML = await getDataSourcePluginContent(pluginId);
+            } else {
+                body.innerHTML = getGenericPluginContent();
+            }
+            
+            overlay.classList.add('show');
+        }
+        
+        async function getToolPluginContent(pluginId) {
+            try {
+                const response = await fetch(`/api/plugins/${pluginId}/tools`);
+                const data = await response.json();
+                const tools = data.tools || [];
+                
+                currentTool = null;
+                
+                return `
+                    <div class="form-group">
+                        <label class="form-label">选择工具</label>
+                        <div class="tools-grid">
+                            ${tools.map((tool, idx) => `
+                                <div class="tool-item" data-tool="${tool}" onclick="selectTool('${tool}', this)">
+                                    <div class="tool-name">${escapeHtml(tool)}</div>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">参数 (JSON 格式)</label>
+                        <textarea class="form-textarea" id="plugin-params" placeholder='{"key": "value"}'></textarea>
+                    </div>
+                    <div id="plugin-result"></div>
+                `;
+            } catch (error) {
+                return `<div>获取工具列表失败</div>`;
+            }
+        }
+        
+        function selectTool(toolName, element) {
+            currentTool = toolName;
+            document.querySelectorAll('.tool-item').forEach(el => el.classList.remove('selected'));
+            element.classList.add('selected');
+        }
+        
+        async function getAnalyticsPluginContent(pluginId) {
+            try {
+                const response = await fetch(`/api/plugins/${pluginId}/analytics`);
+                const data = await response.json();
+                const analyticsList = data.analytics || [];
+                
+                currentTool = null;
+                
+                return `
+                    <div class="form-group">
+                        <label class="form-label">选择分析方法</label>
+                        <div class="tools-grid">
+                            ${analyticsList.map((a, idx) => `
+                                <div class="tool-item" data-tool="${a}" onclick="selectTool('${a}', this)">
+                                    <div class="tool-name">${escapeHtml(a)}</div>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">数据 (JSON 数组格式)</label>
+                        <textarea class="form-textarea" id="plugin-data" placeholder='[1, 2, 3, 4, 5]'></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">参数 (JSON 格式，可选)</label>
+                        <textarea class="form-textarea" id="plugin-params" placeholder='{"param": "value"}'></textarea>
+                    </div>
+                    <div id="plugin-result"></div>
+                `;
+            } catch (error) {
+                return `<div>获取分析方法失败</div>`;
+            }
+        }
+        
+        async function getVisualizationPluginContent(pluginId) {
+            try {
+                const response = await fetch(`/api/plugins/${pluginId}/visualizations`);
+                const data = await response.json();
+                const vizList = data.visualizations || [];
+                
+                currentTool = null;
+                
+                return `
+                    <div class="form-group">
+                        <label class="form-label">选择可视化类型</label>
+                        <div class="tools-grid">
+                            ${vizList.map((v, idx) => `
+                                <div class="tool-item" data-tool="${v}" onclick="selectTool('${v}', this)">
+                                    <div class="tool-name">${escapeHtml(v)}</div>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">数据 (JSON 数组格式)</label>
+                        <textarea class="form-textarea" id="plugin-data" placeholder='[{"x": 1, "y": 2}]'></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">参数 (JSON 格式，可选)</label>
+                        <textarea class="form-textarea" id="plugin-params" placeholder='{"title": "图表标题"}'></textarea>
+                    </div>
+                    <div id="plugin-result"></div>
+                `;
+            } catch (error) {
+                return `<div>获取可视化类型失败</div>`;
+            }
+        }
+        
+        async function getDataSourcePluginContent(pluginId) {
+            try {
+                const response = await fetch(`/api/plugins/${pluginId}/data-sources`);
+                const data = await response.json();
+                const sources = data.data_sources || [];
+                
+                currentTool = null;
+                
+                return `
+                    <div class="form-group">
+                        <label class="form-label">选择数据源</label>
+                        <div class="tools-grid">
+                            ${sources.map((s, idx) => `
+                                <div class="tool-item" data-tool="${s}" onclick="selectTool('${s}', this)">
+                                    <div class="tool-name">${escapeHtml(s)}</div>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">参数 (JSON 格式，可选)</label>
+                        <textarea class="form-textarea" id="plugin-params" placeholder='{"count": 10}'></textarea>
+                    </div>
+                    <div id="plugin-result"></div>
+                `;
+            } catch (error) {
+                return `<div>获取数据源失败</div>`;
+            }
+        }
+        
+        function getGenericPluginContent() {
+            return `
+                <div class="form-group">
+                    <label class="form-label">参数 (JSON 格式)</label>
+                    <textarea class="form-textarea" id="plugin-params" placeholder='{"key": "value"}'></textarea>
+                </div>
+                <div id="plugin-result"></div>
+            `;
+        }
+        
+        async function executeCurrentPlugin() {
+            if (!currentPlugin || !currentTool) {
+                alert('请选择要执行的功能');
+                return;
+            }
+            
+            const pluginId = currentPlugin.metadata?.id;
+            const pluginType = currentPlugin.metadata?.type;
+            const resultDiv = document.getElementById('plugin-result');
+            
+            try {
+                let url = '';
+                let body = {};
+                
+                const paramsInput = document.getElementById('plugin-params');
+                const dataInput = document.getElementById('plugin-data');
+                
+                if (pluginType === 'tool') {
+                    url = `/api/plugins/${pluginId}/tools/${currentTool}`;
+                    try {
+                        body = paramsInput?.value ? JSON.parse(paramsInput.value) : {};
+                    } catch (e) {
+                        body = {};
+                    }
+                } else if (pluginType === 'analytics') {
+                    url = `/api/plugins/${pluginId}/analytics/${currentTool}`;
+                    try {
+                        const data = dataInput?.value ? JSON.parse(dataInput.value) : [];
+                        const params = paramsInput?.value ? JSON.parse(paramsInput.value) : {};
+                        body = { data, params };
+                    } catch (e) {
+                        body = { data: [], params: {} };
+                    }
+                } else if (pluginType === 'visualization') {
+                    url = `/api/plugins/${pluginId}/visualizations/${currentTool}`;
+                    try {
+                        const data = dataInput?.value ? JSON.parse(dataInput.value) : [];
+                        const params = paramsInput?.value ? JSON.parse(paramsInput.value) : {};
+                        body = { data, params };
+                    } catch (e) {
+                        body = { data: [], params: {} };
+                    }
+                } else if (pluginType === 'data_source') {
+                    url = `/api/plugins/${pluginId}/data-sources/${currentTool}`;
+                    try {
+                        const params = paramsInput?.value ? JSON.parse(paramsInput.value) : {};
+                        body = { params };
+                    } catch (e) {
+                        body = { params: {} };
+                    }
+                } else {
+                    url = `/api/plugins/${pluginId}/execute`;
+                    try {
+                        body = paramsInput?.value ? JSON.parse(paramsInput.value) : {};
+                    } catch (e) {
+                        body = {};
+                    }
+                }
+                
+                const response = await fetch(url, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(body)
+                });
+                
+                const result = await response.json();
+                
+                resultDiv.innerHTML = `
+                    <div class="result-box">
+                        <div class="result-title">✅ 执行结果</div>
+                        <pre class="result-content">${escapeHtml(JSON.stringify(result, null, 2))}</pre>
+                    </div>
+                `;
+            } catch (error) {
+                console.error('Execution failed:', error);
+                resultDiv.innerHTML = `
+                    <div class="result-box">
+                        <div class="result-title">❌ 执行失败</div>
+                        <pre class="result-content">${escapeHtml(error.message || '未知错误')}</pre>
+                    </div>
+                `;
+            }
+        }
+        
+        function closeModal() {
+            document.getElementById('modal-overlay').classList.remove('show');
+            currentPlugin = null;
+            currentTool = null;
+        }
+        
+        async function saveState() {
+            try {
+                await fetch('/api/plugins/save-state', { method: 'POST' });
+                alert('状态已保存');
+            } catch (error) {
+                alert('保存失败: ' + error.message);
+            }
+        }
+        
+        async function loadState() {
+            try {
+                await fetch('/api/plugins/load-state', { method: 'POST' });
+                await refreshPlugins();
+                alert('状态已加载');
+            } catch (error) {
+                alert('加载失败: ' + error.message);
+            }
+        }
+        
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+        
+        document.getElementById('modal-overlay').addEventListener('click', (e) => {
+            if (e.target === e.currentTarget) closeModal();
+        });
+        
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') closeModal();
+        });
+    </script>
+</body>
+</html>

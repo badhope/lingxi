@@ -1,8 +1,9 @@
 """完整功能测试脚本"""
 import sys
 import os
-
-PROJECT_ROOT = r'c:\Users\X1882\Desktop\Data-Agent\OpenManus'
+from pathlib import Path
+PROJECT_ROOT = Path(__file__).parent / 'dataagent'
+PROJECT_ROOT = str(PROJECT_ROOT.resolve())
 sys.path.insert(0, PROJECT_ROOT)
 os.chdir(PROJECT_ROOT)
 
