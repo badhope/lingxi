@@ -1,24 +1,40 @@
 """
-DataAgent - 配置常量与路径定义
+DATA-Agent 配置管理
+基于 CrewAI 的智能数据助手
 """
-
+from pydantic_settings import BaseSettings
 from pathlib import Path
 
-try:
-    from openai import AsyncOpenAI
-    OPENAI_AVAILABLE = True
-except ImportError:
-    OPENAI_AVAILABLE = False
 
-BASE_DIR = Path(__file__).parent
-CONFIG_DIR = BASE_DIR / "config"
-DATA_DIR = BASE_DIR / "data"
-KNOWLEDGE_DIR = DATA_DIR / "knowledge_bases"
-SKILLS_DIR = DATA_DIR / "skills"
-DATABASES_DIR = DATA_DIR / "databases"
-MCP_CONFIG_FILE = CONFIG_DIR / "mcp.json"
-SETTINGS_FILE = CONFIG_DIR / "web_config.json"
-CONVERSATIONS_FILE = DATA_DIR / "conversations.json"
+class Settings(BaseSettings):
+    """应用配置"""
+    
+    # App
+    app_name: str = "DATA-Agent"
+    app_version: str = "2.0.0"
+    debug: bool = True
+    
+    # LLM 配置
+    openai_api_key: str | None = None
+    openai_base_url: str = "https://api.openai.com/v1"
+    default_model: str = "gpt-4-turbo"
+    default_temperature: float = 0.7
+    
+    # 路径配置
+    base_dir: Path = Path(__file__).parent
+    data_dir: Path = Path("./data")
+    config_dir: Path = Path("./config")
+    
+    # API 配置
+    api_host: str = "0.0.0.0"
+    api_port: int = 8000
+    
+    # 日志配置
+    log_level: str = "INFO"
+    
+    class Config:
+        env_file = ".env"
+        env_file_encoding = "utf-8"
 
-for dir_path in [CONFIG_DIR, DATA_DIR, KNOWLEDGE_DIR, SKILLS_DIR, DATABASES_DIR]:
-    dir_path.mkdir(parents=True, exist_ok=True)
+
+settings = Settings()

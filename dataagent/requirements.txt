@@ -1,62 +1,54 @@
-fastapi>=0.100.0
-uvicorn[standard]>=0.23.0
-websockets>=11.0.0
-python-multipart>=0.0.6
+# Web Framework
+fastapi>=0.104.0
+uvicorn[standard]>=0.24.0
+
+# AI & LLM
+crewai>=0.30.0
+langchain>=0.1.0
+langchain-openai>=0.0.5
 openai>=1.0.0
 anthropic>=0.18.0
-tenacity>=8.0.0
-tiktoken>=0.7.0
+
+# Vector Databases & Knowledge
+faiss-cpu>=1.7.4
+llama-index>=0.10.0
+chromadb>=0.4.0
+
+# Document Processing
+pdfplumber>=0.10.0
+python-pptx>=0.6.21
+python-docx>=0.8.11
+PyMuPDF>=1.23.0
+
+# Data Processing
+pandas>=2.0.0
+numpy>=1.24.0
+
+# Utilities
 pydantic>=2.0.0
 pydantic-settings>=2.0.0
 python-dotenv>=1.0.0
-tomli>=2.0.0
-pandas>=2.0.0
-numpy>=1.24.0
-python-pptx>=0.6.21
-pdfplumber>=0.10.0
-Pillow>=10.0.0
-markdown>=3.5.0
+tenacity>=8.0.0
 httpx>=0.25.0
-aiohttp>=3.9.0
-requests>=2.31.0
-pygments>=2.16.0
-loguru>=0.7.0
-rich>=13.0.0
-matplotlib>=3.7.0
-scipy>=1.10.0
-scikit-learn>=1.2.0
-seaborn>=0.12.0
-aiosqlite>=0.19.0
-mcp>=1.0.0
-duckduckgo-search>=6.0.0
-googlesearch-python>=1.3.0
-beautifulsoup4>=4.12.0
 aiofiles>=24.1.0
+python-multipart>=0.0.6
+
+# Search & Web
+beautifulsoup4>=4.12.0
+lxml>=4.9.0
+
+# CLI & UI
+rich>=13.0.0
 jinja2>=3.1.0
-pymupdf>=1.23.0
-python-docx>=0.8.11
-faiss-cpu>=1.7.4
-openai-whisper>=20231117
-chromadb>=0.4.0
-spacy>=3.7.0
-plotly>=5.15.0
-aiohttp>=3.9.0
 
-# 核心AI框架
-langchain>=0.2.0
-langchain-core>=0.2.0
-langchain-community>=0.2.0
-langgraph>=0.0.60
-llama-index>=0.10.0
-llama-index-core>=0.10.0
-llama-index-llms-openai>=0.1.0
-llama-index-embeddings-openai>=0.1.0
-llama-parse>=0.3.0
+# WebSocket
+websockets>=12.0
 
-# 可观测性
-langfuse>=2.0.0
+# Authentication & Security
+python-jose[cryptography]>=3.3.0
+passlib[bcrypt]>=1.7.4
+bcrypt>=4.0.0
 
-# 工具集成
-duckduckgo-search>=6.0.0
-google-api-python-client>=2.0.0
-redis>=5.0.0
+# Optional: for enhanced capabilities
+# crewai-tools>=0.1.0  # Uncomment for more CrewAI tools
+# duckduckgo-search>=6.0.0  # For web search

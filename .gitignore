@@ -135,6 +135,7 @@ pyrightconfig.json
 .ideaDataSources/
 *.iml
 api/.idea
+.vscode/
 
 # OS
 .DS_Store
@@ -197,3 +198,25 @@ scripts/stress-test/reports/
 
 # Scripts
 startup.sh
+
+# 敏感信息
+*.key
+*.pem
+*token*
+*secret*
+*password*
+*credential*
+config/config.toml
+config/mcp.json
+config/web_config.json
+data/**/*.json
+data/**/*.db
+*.pptx
+*.ppt
+*.doc
+*.docx
+*.pdf
+
+# 重构过程中的临时文件
+REFACTORING_PLAN.md
+REFACTORING_SUMMARY.md
