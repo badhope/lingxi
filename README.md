@@ -8,11 +8,40 @@
 [![Python](https://img.shields.io/badge/Python-3.10+-blue.svg)](https://www.python.org/)
 [![CrewAI](https://img.shields.io/badge/CrewAI-0.30+-green.svg)](https://github.com/joaomdmoura/crewAI)
 [![FastAPI](https://img.shields.io/badge/FastAPI-0.104+-red.svg)](https://fastapi.tiangolo.com/)
+[![GitHub Stars](https://img.shields.io/github/stars/badhope/DATA-Agent?style=social)](https://github.com/badhope/DATA-Agent/stargazers)
+[![GitHub Forks](https://img.shields.io/github/forks/badhope/DATA-Agent?style=social)](https://github.com/badhope/DATA-Agent/network/members)
+[![GitHub Issues](https://img.shields.io/github/issues/badhope/DATA-Agent)](https://github.com/badhope/DATA-Agent/issues)
+[![GitHub PRs](https://img.shields.io/github/issues-pr/badhope/DATA-Agent)](https://github.com/badhope/DATA-Agent/pulls)
+[![CI](https://github.com/badhope/DATA-Agent/actions/workflows/ci.yml/badge.svg)](https://github.com/badhope/DATA-Agent/actions/workflows/ci.yml)
 
 **[English](./README.md)** | 
 **[中文](./README_zh.md)**
 
 </div>
+
+---
+
+## 📋 Table of Contents
+
+- [🌟 Introduction](#-introduction)
+- [🚀 Quick Start](#-quick-start)
+  - [Prerequisites](#prerequisites)
+  - [Installation](#installation)
+  - [Configuration](#configuration)
+  - [Start the Application](#start-the-application)
+- [🏗️ Project Structure](#️-project-structure)
+- [💡 Core Features](#-core-features)
+  - [Data Analysis Crew](#1-data-analysis-crew)
+  - [Knowledge Base Q&A Crew](#2-knowledge-base-qa-crew)
+- [🔧 API Usage](#-api-usage)
+- [🛠️ Tech Stack](#️-tech-stack)
+- [📖 Configuration](#-configuration)
+- [🎯 Use Cases](#-use-cases)
+- [🔄 Project History](#-project-history)
+- [🤝 Contributing](#-contributing)
+- [📄 License](#-license)
+- [💬 Support \& Feedback](#-support--feedback)
+- [🙏 Acknowledgments](#-acknowledgments)
 
 ---
 
@@ -393,9 +422,42 @@ This project is licensed under the MIT License - see the [LICENSE](./LICENSE) fi
 
 For questions or suggestions:
 
-- Submit an Issue
-- Send a Pull Request
-- Join the Discussion
+- 📖 Read our [Documentation](https://github.com/badhope/DATA-Agent#readme)
+- 🐛 Report bugs via [GitHub Issues](https://github.com/badhope/DATA-Agent/issues)
+- 💡 Request features via [GitHub Issues](https://github.com/badhope/DATA-Agent/issues)
+- 🤝 Submit Pull Requests (see [Contributing Guide](./CONTRIBUTING.md))
+- 💬 Join the community discussions
+
+### Common Issues
+
+**Q: API Key Error**
+```bash
+# Make sure your .env file contains a valid OpenAI API key
+OPENAI_API_KEY=sk-your-actual-key-here
+```
+
+**Q: Dependencies Installation Failed**
+```bash
+# Try upgrading pip first
+pip install --upgrade pip
+pip install -r requirements.txt
+```
+
+**Q: Service Won't Start**
+```bash
+# Check if port 8000 is already in use
+lsof -i :8000
+# Or change the port in .env
+API_PORT=8001
+```
+
+**Q: Import Errors**
+```bash
+# Make sure you're in the dataagent directory
+cd dataagent
+# Reinstall dependencies
+pip install -e .
+```
 
 ---
 

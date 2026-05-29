@@ -1,0 +1,27 @@
+# CODEOWNERS - Code ownership rules
+
+# Default owner for all files
+* @badhope
+
+# Agent-related code
+dataagent/agents/ @badhope
+dataagent/crews/ @badhope
+
+# Core infrastructure
+dataagent/core/ @badhope
+dataagent/routers/ @badhope
+
+# Document processing
+dataagent/app/document/ @badhope
+
+# Knowledge base
+dataagent/app/knowledge/ @badhope
+
+# CI/CD and configuration
+.github/ @badhope
+.github/workflows/ @badhope
+
+# Documentation
+README.md @badhope
+README_zh.md @badhope
+CONTRIBUTING.md @badhope
