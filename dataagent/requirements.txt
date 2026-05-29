@@ -21,7 +21,7 @@ python-docx>=0.8.11
 PyMuPDF>=1.23.0
 
 # Data Processing
-pandas>=2.0.0
+pandas>=3.0.3
 numpy>=1.24.0
 
 # Utilities
