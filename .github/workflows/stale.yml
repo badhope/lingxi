@@ -1,0 +1,51 @@
+# Configuration for GitHub Stale Bot
+# https://github.com/actions/stale
+
+name: 'Close stale issues'
+
+on:
+  schedule:
+  - cron: '0 0 * * *'  # Run daily at midnight
+  workflow_dispatch:
+
+permissions:
+  issues: write
+  pull-requests: write
+
+jobs:
+  stale:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/stale@v9
+      with:
+        # Mark issues as stale after 60 days of inactivity
+        days-before-stale: 60
+        
+        # Close stale issues after 7 more days
+        days-before-close: 7
+        
+        # Only process issues (not PRs) for this workflow
+        only-labels: 'awaiting response'
+        
+        # Labels to apply when an issue becomes stale
+        stale-label: 'stale'
+        
+        # Comment to post when an issue becomes stale
+        stale-issue-message: |
+          👋 Hi there! This issue has been automatically marked as stale because it has not had recent activity.
+
+          If this issue should remain open, please add a comment explaining why it should stay open. 
+          Otherwise, this issue will be closed in 7 days.
+
+          Thank you for your contribution!
+
+        # Comment to post when an issue is closed
+        close-issue-message: |
+          👋 This issue was closed because it has been inactive for 7 days since being marked as stale.
+
+          If you believe this issue should remain open, please feel free to reopen it or add a new comment.
+
+          Thank you for understanding!
+
+        # Do not mark PRs as stale with this workflow
+        operations-per-run: 100
