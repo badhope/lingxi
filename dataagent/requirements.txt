@@ -38,7 +38,7 @@ beautifulsoup4>=4.12.0
 lxml>=4.9.0
 
 # CLI & UI
-rich>=13.0.0
+rich>=15.0.0
 jinja2>=3.1.0
 
 # WebSocket
