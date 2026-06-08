@@ -1,0 +1,32 @@
+# .gitattributes
+
+# Auto detect text files and perform LF normalization
+* text=auto
+
+# Force Unix line endings for these files
+*.py text eol=lf
+*.md text eol=lf
+*.txt text eol=lf
+*.yml text eol=lf
+*.yaml text eol=lf
+*.json text eol=lf
+*.sh text eol=lf
+*.toml text eol=lf
+
+# Denote all files that are truly binary and should not be modified
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.ico binary
+*.pdf binary
+*.pptx binary
+*.docx binary
+*.xlsx binary
+*.zip binary
+*.gz binary
+*.tar binary
+*.whl binary
+
+# Linguist language overrides
+*.md linguist-language=Python

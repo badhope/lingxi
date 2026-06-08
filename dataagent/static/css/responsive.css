@@ -1,0 +1,179 @@
+/**
+ * DataAgent - Responsive Styles
+ * 响应式布局优化
+ */
+
+/* 基础响应式断点 */
+:root {
+    --mobile-breakpoint: 768px;
+    --tablet-breakpoint: 1024px;
+    --desktop-breakpoint: 1200px;
+}
+
+/* 移动端优化 */
+@media (max-width: 767px) {
+    .app-container {
+        flex-direction: column;
+        height: 100vh;
+    }
+
+    .sidebar {
+        width: 100%;
+        height: auto;
+        max-height: 200px;
+        overflow-y: auto;
+    }
+
+    .main-content {
+        width: 100%;
+        height: calc(100vh - 200px);
+    }
+
+    .chat-container {
+        padding: 10px;
+    }
+
+    .input-container {
+        padding: 10px;
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+    }
+
+    .message-content {
+        max-width: 90%;
+    }
+
+    .nav-item {
+        padding: 8px 12px;
+        font-size: 14px;
+    }
+
+    .header-actions {
+        padding: 8px;
+    }
+
+    .status-indicator {
+        font-size: 12px;
+    }
+}
+
+/* 平板设备优化 */
+@media (min-width: 768px) and (max-width: 1023px) {
+    .sidebar {
+        width: 250px;
+    }
+
+    .main-content {
+        width: calc(100% - 250px);
+    }
+
+    .message-content {
+        max-width: 85%;
+    }
+}
+
+/* 大屏幕优化 */
+@media (min-width: 1200px) {
+    .sidebar {
+        width: 280px;
+    }
+
+    .message-content {
+        max-width: 80%;
+    }
+
+    .input-container textarea {
+        min-height: 60px;
+    }
+}
+
+/* 通用响应式组件 */
+.responsive-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 16px;
+}
+
+.responsive-card {
+    background: white;
+    border-radius: 12px;
+    padding: 16px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.responsive-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* 触摸友好 */
+@media (pointer: coarse) {
+    button, .nav-item, .tool-button {
+        min-height: 44px;
+        min-width: 44px;
+    }
+
+    input, textarea, select {
+        min-height: 44px;
+        font-size: 16px; /* 防止iOS缩放 */
+    }
+}
+
+/* 暗色模式支持 */
+@media (prefers-color-scheme: dark) {
+    :root {
+        --bg-primary: #1a1a1a;
+        --bg-secondary: #2d2d2d;
+        --text-primary: #e0e0e0;
+        --text-secondary: #a0a0a0;
+        --border-color: #404040;
+    }
+
+    .app-container {
+        background: var(--bg-primary);
+        color: var(--text-primary);
+    }
+
+    .message.user-message {
+        background: var(--bg-secondary);
+    }
+
+    .sidebar {
+        background: var(--bg-secondary);
+        border-color: var(--border-color);
+    }
+}
+
+/* 减少动画（无障碍） */
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}
+
+/* 打印样式 */
+@media print {
+    .sidebar,
+    .input-container,
+    .header-actions,
+    .toast-container {
+        display: none !important;
+    }
+
+    .main-content {
+        width: 100%;
+        height: auto;
+    }
+
+    .message {
+        break-inside: avoid;
+        page-break-inside: avoid;
+    }
+}

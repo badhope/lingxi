@@ -1,0 +1,54 @@
+# Web Framework
+fastapi>=0.104.0
+uvicorn[standard]>=0.24.0
+
+# AI & LLM
+crewai>=0.30.0
+langchain>=0.1.0
+langchain-openai>=0.0.5
+openai>=1.0.0
+anthropic>=0.18.0
+
+# Vector Databases & Knowledge
+faiss-cpu>=1.7.4
+llama-index>=0.10.0
+chromadb>=0.4.0
+
+# Document Processing
+pdfplumber>=0.10.0
+python-pptx>=0.6.21
+python-docx>=0.8.11
+PyMuPDF>=1.23.0
+
+# Data Processing
+pandas>=2.0.0
+numpy>=1.24.0
+
+# Utilities
+pydantic>=2.0.0
+pydantic-settings>=2.0.0
+python-dotenv>=1.0.0
+tenacity>=8.0.0
+httpx>=0.25.0
+aiofiles>=24.1.0
+python-multipart>=0.0.6
+
+# Search & Web
+beautifulsoup4>=4.12.0
+lxml>=4.9.0
+
+# CLI & UI
+rich>=13.0.0
+jinja2>=3.1.0
+
+# WebSocket
+websockets>=12.0
+
+# Authentication & Security
+python-jose[cryptography]>=3.3.0
+passlib[bcrypt]>=1.7.4
+bcrypt>=4.0.0
+
+# Optional: for enhanced capabilities
+# crewai-tools>=0.1.0  # Uncomment for more CrewAI tools
+# duckduckgo-search>=6.0.0  # For web search
