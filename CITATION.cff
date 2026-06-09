@@ -7,7 +7,6 @@ authors:
   - family-names: badhope
     given-names: badhope
     alias: badhope
-    orcid: https://orcid.org/0000-0000-0000-0000
 identifiers:
   - type: url
     value: https://github.com/badhope/Data-Agent
@@ -16,6 +15,15 @@ type: software
 url: https://github.com/badhope/Data-Agent
 repository-code: https://github.com/badhope/Data-Agent
 keywords:
-  - open-source, software
+  - ai-agent
+  - data-assistant
+  - document-processing
+  - email-automation
+  - office-automation
+  - python
+  - task-management
+  - crewai
+  - data-analysis
+  - multi-agent
 abstract: >-
-  A multi-agent intelligent data assistant built on the CrewAI framework. Role-driven collaboration for data analysis, knowledge base Q&A, document processing, and more, with REST API and CLI.
+  Multi-agent data assistant built on CrewAI. Two endpoints: /api/analyze (researcher → analyst → writer) and /api/knowledge/query (single agent). FastAPI backend + a CLI that hits the same code.
