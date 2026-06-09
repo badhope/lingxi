@@ -1,0 +1,21 @@
+cff-version: 1.2.0
+message: >-
+  If you use this software in academic work, please cite it using the
+  metadata below.
+title: Data-Agent
+authors:
+  - family-names: badhope
+    given-names: badhope
+    alias: badhope
+    orcid: https://orcid.org/0000-0000-0000-0000
+identifiers:
+  - type: url
+    value: https://github.com/badhope/Data-Agent
+license: MIT
+type: software
+url: https://github.com/badhope/Data-Agent
+repository-code: https://github.com/badhope/Data-Agent
+keywords:
+  - open-source, software
+abstract: >-
+  A multi-agent intelligent data assistant built on the CrewAI framework. Role-driven collaboration for data analysis, knowledge base Q&A, document processing, and more, with REST API and CLI.
