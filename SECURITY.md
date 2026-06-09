@@ -1,26 +1,35 @@
 # Security
 
-## Reporting a vulnerability
+Found a hole? **Don't file a public issue.** Open a private security
+advisory or email me (the address is in `CITATION.cff` if there's one;
+otherwise it's on my profile page). I prefer the advisory form because
+GitHub handles the disclosure timeline.
 
-Do not open a public issue.
+What I'll do:
 
-Open a private advisory: <https://github.com/badhope/DATA-Agent/security/advisories/new>
+- Reply within 3 business days.
+- Triage and try to reproduce within 10 business days.
+- Ship a fix, or at least a documented mitigation, as soon as I can.
+- Credit you in the advisory if you want it. Say "anonymous" if you don't.
 
-Include:
+I follow responsible disclosure: please keep the report private until I
+publish a fix and (if needed) a CVE / advisory. I won't sue you for
+security research done in good faith, and I won't go after security
+researchers for things that are obviously bugs.
 
-- What the vulnerability is and how to reproduce it.
-- What the impact looks like (data leak, RCE, etc.).
-- A suggested fix if you have one.
+## What I patch
 
-You will get an acknowledgement within a few days.
+Only the latest commit on `main`. I don't backport. If you're on an
+older version, the right fix is to upgrade.
 
-## Things to keep in mind when deploying
+## In scope
 
-- Never commit API keys. The project reads them from environment variables
-  (`OPENAI_API_KEY`, etc.) — see `dataagent/config.py`.
-- Rotate keys if you suspect they leaked. Revoke at
-  <https://github.com/settings/tokens> and at your LLM provider.
-- The default config binds the API to `0.0.0.0`. Put it behind a reverse proxy
-  with auth if exposing it.
-- The auth layer (`dataagent/core/auth.py`) uses PBKDF2. The default session
-  TTL is fine for local use; tighten it for production.
+- Code in this repository.
+- Official container images and release artifacts that came from this
+  repo (when they exist).
+
+## Out of scope
+
+- Third-party dependencies. Report upstream unless I pinned and shipped
+  a vulnerable version myself.
+- Scanners, social engineering, DoS, or "you used a default port".
