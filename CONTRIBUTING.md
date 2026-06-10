@@ -1,48 +1,46 @@
 # Contributing
 
-PRs and merges go through review by the maintainer — no bot does it automatically.
+Want to send a PR? Cool. Here's the flow.
 
-## Setup
+## Before you start
 
-```bash
-git clone https://github.com/badhope/DATA-Agent.git
-cd DATA-Agent/dataagent
-python -m venv venv && source venv/bin/activate
-pip install -r requirements.txt
-```
+- **Open an issue first** if the change is non-trivial. I don't want you
+  to spend a weekend on something I'd have asked you to do differently.
+- Read the code that's already there. I try to keep it boring and
+  consistent. If you're adding a new pattern, it should fit.
+- Look at the README for how to install / run / test. Use the lockfile
+  that's checked in; don't regenerate it.
 
-## Workflow
+## Local checks
 
-1. Branch from `main`: `git checkout -b <type>/<short-desc>`
-   - `feat/...` new feature
-   - `fix/...` bug
-   - `chore/...` refactor / cleanup / docs
-2. Make the change. Keep it focused.
-3. Run the API and CLI locally to sanity-check.
-4. Open a PR. Fill in the template. Reference the issue if any.
-5. Maintainer reviews and merges.
-
-## Style
-
-- Python 3.10+. PEP 8, type hints where they help.
-- Keep modules small. One router per file. Services do not import routers.
-- Do not add docstrings that just repeat the function name. Do add a one-line
-  docstring on every public function.
-- Do not introduce new top-level config files; extend `dataagent/config.py` and
-  `config/config.example.toml` if needed.
+Run whatever the project has: `pnpm test`, `pytest`, `cargo test`, etc.
+If linter / formatter configs are checked in, run them too. CI will
+catch what you missed, but a green push is faster than a red one.
 
 ## Commit messages
 
-```
-<scope>: <imperative summary>
+I don't enforce Conventional Commits. Subject, blank line, body, done.
+If a commit fixes an issue, mention the issue number. Don't bother with
+emoji or "WIP" prefixes.
 
-<body explaining why, not what>
-```
+## Pull requests
 
-## What to avoid
+- Fill the PR template. One paragraph in the body is fine; screenshots
+  help for UI.
+- Keep the diff small. Squash before merging unless the history matters.
+- I'll review roughly in order of arrival. If CI is green and the change
+  does what the description says, I'll merge. I might push back on
+  architecture; that's not personal.
+- Don't commit secrets, generated build output, large binaries, or
+  someone else's code without a license.
 
-- New `requirements-minimal.txt` style files — there is exactly one `requirements.txt`.
-- New "minimal" config shims next to the real ones.
-- Frontend pages that the backend does not serve. Either wire them in `main.py`
-  or don't add them.
-- Auto-generated AI-style READMEs full of badges and emoji.
+## What I won't merge
+
+- Drive-by refactors that don't fix a real problem.
+- New dependencies for trivial reasons.
+- Anything that breaks the existing API without a heads-up first.
+
+## License
+
+By contributing, you agree your contribution is licensed under the same
+license as the rest of the project. See [`LICENSE`](./LICENSE).

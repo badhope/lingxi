@@ -1,0 +1,29 @@
+cff-version: 1.2.0
+message: >-
+  If you use this software in academic work, please cite it using the
+  metadata below.
+title: Data-Agent
+authors:
+  - family-names: badhope
+    given-names: badhope
+    alias: badhope
+identifiers:
+  - type: url
+    value: https://github.com/badhope/Data-Agent
+license: MIT
+type: software
+url: https://github.com/badhope/Data-Agent
+repository-code: https://github.com/badhope/Data-Agent
+keywords:
+  - ai-agent
+  - data-assistant
+  - document-processing
+  - email-automation
+  - office-automation
+  - python
+  - task-management
+  - crewai
+  - data-analysis
+  - multi-agent
+abstract: >-
+  Multi-agent data assistant built on CrewAI. Two endpoints: /api/analyze (researcher → analyst → writer) and /api/knowledge/query (single agent). FastAPI backend + a CLI that hits the same code.

@@ -1,16 +1,27 @@
-# Pull Request
-
 ## What
+
+<!-- One line: what this PR does -->
 
 ## Why
 
-Fixes #
+<!-- The reason. What problem does this fix / what value does it add? -->
 
-## How to verify
+## How
 
-- [ ] `python main.py` starts cleanly
-- [ ] `python cli.py` runs both menu options
-- [ ] `curl localhost:8000/health` returns ok
-- [ ] If the API changed, updated README and `routers/__init__.py`
+<!-- Approach, breaking changes, anything weird you did -->
 
-## Notes for reviewer
+## Tested
+
+<!-- How you tested. If you didn't, say so and tell me why -->
+
+## Checklist
+
+- [ ] I have read [`CONTRIBUTING.md`](./CONTRIBUTING.md)
+- [ ] Tests pass locally (and CI is green)
+- [ ] I didn't add any new linter / typecheck warnings
+- [ ] I didn't commit any secrets, build output, or large binaries
+- [ ] I added a `CHANGELOG.md` entry under "Unreleased" if it matters
+
+## Screenshots / Logs
+
+<!-- Drag in images for UI changes. Paste (redacted) logs for runtime changes. -->
