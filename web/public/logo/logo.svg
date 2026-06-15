@@ -1,0 +1,24 @@
+<svg width="96" height="28" viewBox="0 0 96 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="DATA Logo">
+  <!-- Symbol Mark: Abstract data node -->
+  <g id="Data-Node">
+    <!-- Outer ring -->
+    <circle cx="18" cy="14" r="12" stroke="#0033FF" stroke-width="2.5" fill="none"/>
+    <!-- Inner triangle (arrow/flow) -->
+    <path d="M18 7L25 18H11L18 7Z" fill="#0033FF"/>
+    <!-- Center dot -->
+    <circle cx="18" cy="14" r="2" fill="white"/>
+  </g>
+  <!-- Wordmark: D A T A -->
+  <g id="Wordmark">
+    <!-- D -->
+    <path d="M39 6H36.549V22H39C42.955 22 45.086 19.796 45.086 15.974V12.026C45.086 8.204 42.955 6 39 6ZM39 19.386H37.748V8.614H39C41.583 8.614 42.846 9.973 42.846 12.187V15.813C42.846 18.027 41.583 19.386 39 19.386Z" fill="#1D2939"/>
+    <!-- A -->
+    <path d="M49.998 22H52.257L54.4 16.1H60.512L62.655 22H64.914L59.16 6H55.752L49.998 22ZM55.034 14.116L57.422 7.768H57.49L59.878 14.116H55.034Z" fill="#1D2939"/>
+    <!-- T -->
+    <path d="M67.014 22H69.254V15.408H76V6H73.76V13.064H69.238V6H66.998V14.751L67.014 22Z" fill="#1D2939"/>
+    <!-- A -->
+    <path d="M80.584 22H82.843L84.987 16.1H91.098L93.242 22H95.5L89.747 6H86.339L80.584 22ZM85.621 14.116L88.009 7.768H88.077L90.465 14.116H85.621Z" fill="#0033FF"/>
+  </g>
+</g>
+</svg>
