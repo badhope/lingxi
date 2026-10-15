@@ -12,7 +12,7 @@
     "tauri:dev:rust": "cargo tauri dev --manifest-path ../src-tauri/Cargo.toml"
   },
   "dependencies": {
-    "echarts": "^5.6.0",
+    "echarts": "^6.1.0",
     "next": "^14.2.0",
     "react": "^18.3.0",
     "react-dom": "^18.3.0",
